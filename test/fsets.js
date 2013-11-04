@@ -3,8 +3,6 @@ var chai = require("chai");
 var expect = chai.expect;
 
 describe('Contains', function() {
-  console.log("fsets: ", fsets);
-  console.log(fsets.contains);
   var contains = fsets.contains;
   var arr = [4,5,6];
   var setOfEvenNums = function(x) { return x % 2 === 0; }

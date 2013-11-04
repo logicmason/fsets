@@ -8,7 +8,6 @@ var fsets = (function() {
   	if (typeof set(element) !== "boolean") throw "Set predicate returned non-boolean value for element";
   	return set(element);
   }
-  console.log('yo');
 }).call(this);
 
 exports = fsets;
