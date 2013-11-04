@@ -1,0 +1,15 @@
+{
+  "name": "fsets",
+  "version": "0.1.0",
+  "description": "Purely functional sets in JavaScript",
+  "scripts": {
+    "test": "make test"
+  },
+  "dependencies": {
+    "chai": "1.*",
+    "mocha": "*"
+  },
+  "engines": {
+    "node": ">=0.8"
+  }
+}

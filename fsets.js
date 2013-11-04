@@ -1,4 +1,14 @@
-// Functional implementation of sets in JavaScript
+// Purely functional implementation of sets in JavaScript
 // Membership in a set is defined based upon a function predicate, a truth test
 
-console.log('yo')
+var fsets = (function() {
+  var root = this;
+  root.contains = function(set, element) {
+  	if (typeof set !== "function") throw "Set must be defined by a predicate function";
+  	if (typeof set(element) !== "boolean") throw "Set predicate returned non-boolean value for element";
+  	return set(element);
+  }
+  console.log('yo');
+}).call(this);
+
+exports = fsets;
