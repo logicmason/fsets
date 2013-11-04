@@ -5,7 +5,7 @@ var fsets = (function() {
   var root = this;
   root.contains = function(set, element) {
   	if (typeof set !== "function") throw "Set must be defined by a predicate function";
-  	if (typeof set(element) !== "boolean") throw "Set predicate returned non-boolean value for element";
+  	if (typeof set(element) !== "boolean") throw "Contains test returned non-boolean value for element";
   	return set(element);
   }
 }).call(this);
