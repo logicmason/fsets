@@ -5,6 +5,7 @@ var expect = chai.expect;
 // immutable globals for test set-up
 var contains = fsets.contains;
 var singleton = fsets.singleton;
+var union = fsets.union;
 var arr = [4,5,6];
 var setOfEvenNums = function(x) { return x % 2 === 0; }
 var setOfBigNums = function(x) { return (x > 100); }
@@ -60,5 +61,30 @@ describe('Singleton Set', function() {
     expect( contains(three, 7) ).false;
     expect( contains(three, 8) ).false;
     expect( contains(nine, 3) ).false;
+  });
+});
+
+describe('Union', function() {
+  var threeAndFour = union( singleton(3), singleton(4));
+  var setOfBigOrEvenNums = union(setOfBigNums, setOfEvenNums);
+
+  it('Should return a function', function() {
+    expect( (typeof threeAndFour === 'function') ).true;
+  });
+
+  it('Should contain all members of either set that generated it', function() {
+    expect( contains(threeAndFour, 4) ).true;
+    expect( contains(threeAndFour, 3) ).true;
+    expect( contains(setOfBigOrEvenNums, 0) ).true;
+    expect( contains(setOfBigOrEvenNums, 10) ).true;
+    expect( contains(setOfBigOrEvenNums, 1041) ).true;
+  });
+
+  it('Should not contain numbers not in either set that generated it', function() {
+    expect( contains(threeAndFour, 7) ).false;
+    expect( contains(threeAndFour, 2) ).false;
+    expect( contains(setOfBigOrEvenNums, 1) ).false;
+    expect( contains(setOfBigOrEvenNums, 9) ).false;
+    expect( contains(setOfBigOrEvenNums, 31) ).false;
   });
 });

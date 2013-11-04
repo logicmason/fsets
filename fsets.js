@@ -12,6 +12,10 @@ var fsets = (function() {
   root.singleton = function(element) {
     return function(x) { return x === element; }
   }
+
+  root.union = function(setA, setB) {
+    return function(x) { return setA(x) || setB(x); }
+  }
 }).call(this);
 
 exports = fsets;
