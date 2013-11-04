@@ -6,6 +6,7 @@ var expect = chai.expect;
 var contains = fsets.contains;
 var singleton = fsets.singleton;
 var union = fsets.union;
+var intersect = fsets.intersect;
 var arr = [4,5,6];
 var setOfEvenNums = function(x) { return x % 2 === 0; }
 var setOfBigNums = function(x) { return (x > 100); }
@@ -80,11 +81,40 @@ describe('Union', function() {
     expect( contains(setOfBigOrEvenNums, 1041) ).true;
   });
 
-  it('Should not contain numbers not in either set that generated it', function() {
+  it('Should not contain numbers not in both sets that generated it', function() {
     expect( contains(threeAndFour, 7) ).false;
     expect( contains(threeAndFour, 2) ).false;
     expect( contains(setOfBigOrEvenNums, 1) ).false;
     expect( contains(setOfBigOrEvenNums, 9) ).false;
     expect( contains(setOfBigOrEvenNums, 31) ).false;
+  });
+});
+
+describe('Intersection', function() {
+  var oneAndFive = union( singleton(1), singleton(5) );
+  var threeAndFour = union( singleton(3), singleton(4));
+  var fiveAndSix = union( singleton(5), singleton(6));
+  var threeToSix = union( singleton(3), singleton(4));
+  var setOfBigEvens = intersect(setOfBigNums, setOfEvenNums);
+  var five = intersect( oneAndFive, fiveAndSix );
+  var threeAndFourIntersectThreeToSix = intersect( threeAndFour, threeToSix );
+
+  it('Should return a function', function() {
+    expect( (typeof setOfBigEvens === 'function') ).true;
+  });
+
+  it('Should contain all members belonging to both sets that generated it', function() {
+    expect( contains(five, 5) ).true;
+    expect( contains(threeAndFourIntersectThreeToSix, 3) ).true;
+    expect( contains(threeAndFourIntersectThreeToSix, 4) ).true;
+  });
+
+  it('Should not contain numbers not in a set that generated it', function() {
+    expect( contains(threeAndFourIntersectThreeToSix, 5) ).false;
+    expect( contains(threeAndFourIntersectThreeToSix, 6) ).false;
+    expect( contains(setOfBigEvens, 0) ).false;
+    expect( contains(setOfBigEvens, 1) ).false;
+    expect( contains(setOfBigEvens, 8) ).false;
+    expect( contains(setOfBigEvens, 3341) ).false;
   });
 });
