@@ -2,11 +2,14 @@ var fsets = require("../fsets.js");
 var chai = require("chai");
 var expect = chai.expect;
 
+// immutable globals for test set-up
+var contains = fsets.contains;
+var singleton = fsets.singleton;
+var arr = [4,5,6];
+var setOfEvenNums = function(x) { return x % 2 === 0; }
+var setOfBigNums = function(x) { return (x > 100); }
+
 describe('Contains', function() {
-  var contains = fsets.contains;
-  var arr = [4,5,6];
-  var setOfEvenNums = function(x) { return x % 2 === 0; }
-  var setOfBigNums = function(x) { return (x > 100); }
 
   it('should throw an error unless the set is a function predicate', function() {
     var badInput = function() {
@@ -34,3 +37,28 @@ describe('Contains', function() {
   });
 });
 
+describe('Singleton Set', function() {
+  var three = singleton(3);
+  var nine = singleton(9);
+
+  it('Should return a function', function() {
+    expect( (typeof three === 'function') ).true;
+  });
+
+  it('Generated singleton predicate should return true for argument passed in', function() {
+    expect( contains(three, 3) ).true;
+    expect( contains(nine, 9) ).true;
+  });
+
+  it('Singleton predicate should return false for other values', function() {
+    expect( contains(three, 0) ).false;
+    expect( contains(three, 1) ).false;
+    expect( contains(three, 2) ).false;
+    expect( contains(three, 4) ).false;
+    expect( contains(three, 5) ).false;
+    expect( contains(three, 6) ).false;
+    expect( contains(three, 7) ).false;
+    expect( contains(three, 8) ).false;
+    expect( contains(nine, 3) ).false;
+  });
+});
