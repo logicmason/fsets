@@ -8,6 +8,8 @@ var singleton = fsets.singleton;
 var union = fsets.union;
 var intersect = fsets.intersect;
 var forall = fsets.forall;
+var exists = fsets.exists;
+
 var arr = [4,5,6];
 var empty = function(x) { return false; }
 var three = singleton(3);
@@ -21,10 +23,11 @@ var threeAndFourIntersectThreeToSix = intersect( threeAndFour, threeToSix );
 var threeAndFour = union(three, singleton(4));
 var fourAndEight = union(singleton(4), singleton(8));
 
-var setOfEvenNums = function(x) { return x % 2 === 0; }
-var setOfBigNums = function(x) { return (x > 100); }
+var setOfEvenNums = function(x) { return x % 2 === 0; };
+var setOfBigNums = function(x) { return (x > 100); };
 var setOfBigEvens = intersect(setOfBigNums, setOfEvenNums);
 var setOfBigOrEvenNums = union(setOfBigNums, setOfEvenNums);
+var setOfEverything = function(x) { return true; };
 
 describe('Contains', function() {
 
@@ -143,5 +146,29 @@ describe('forall', function() {
 
   it('Should return true for an empty set', function() {
     expect( forall(empty, setOfBigEvens) ).true;
+  });
+});
+
+describe('exists', function() {
+  it('Should return a boolean', function() {
+    expect( (typeof exists(fourAndEight, setOfEvenNums) === 'boolean') ).true;
+  });
+
+  it('Should return true if predicate holds true for a single member', function() {
+    expect( exists(fourAndEight, setOfEvenNums) ).true;
+    expect( exists(aThousand, setOfBigNums) ).true;
+    expect( exists(threeAndFour, three) ).true;
+    expect( exists( union(aThousand, threeAndFour), setOfEvenNums ) ).true;
+  });
+
+  it('Should return false if predicate is not true for any members', function() {
+    expect( exists(nine, setOfEvenNums) ).false;
+    expect( exists(threeToSix, setOfBigNums) ).false;
+    expect( exists(oneAndFive, setOfEvenNums) ).false;
+  });
+
+  it('Should return false for an empty set', function() {
+    expect( exists(empty, setOfBigEvens) ).false;
+    expect( exists(empty, setOfEverything) ).false;
   });
 });

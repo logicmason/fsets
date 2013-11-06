@@ -30,7 +30,11 @@ var fsets = (function() {
       else return iter(a+1);
     }
     return iter(low);
-  }
+  };
+
+  root.exists = function(set, test, low, hi) {
+    return !root.forall(set, function(x) { return !test(x); }, low, hi);
+  };
 
 }).call(this);
 
