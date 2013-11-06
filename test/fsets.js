@@ -9,6 +9,7 @@ var union = fsets.union;
 var intersect = fsets.intersect;
 var forall = fsets.forall;
 var exists = fsets.exists;
+var toString = fsets.toString;
 
 var arr = [4,5,6];
 var empty = function(x) { return false; }
@@ -18,7 +19,7 @@ var aThousand = singleton(1000);
 var oneAndFive = union(singleton(1), singleton(5));
 var threeAndFour = union(singleton(3), singleton(4));
 var fiveAndSix = union(singleton(5), singleton(6));
-var threeToSix = union(singleton(3), singleton(4));
+var threeToSix = union(threeAndFour, fiveAndSix);
 var threeAndFourIntersectThreeToSix = intersect( threeAndFour, threeToSix );
 var threeAndFour = union(three, singleton(4));
 var fourAndEight = union(singleton(4), singleton(8));
@@ -170,5 +171,15 @@ describe('exists', function() {
   it('Should return false for an empty set', function() {
     expect( exists(empty, setOfBigEvens) ).false;
     expect( exists(empty, setOfEverything) ).false;
+  });
+});
+
+describe('toString', function () {
+  it('Should return a string', function() {
+    expect( typeof toString(fourAndEight) === 'string' ).true;
+  });
+
+  it('Should return a formated string of set members', function() {
+    expect( toString(threeToSix) === '3, 4, 5, 6').true;
   });
 });

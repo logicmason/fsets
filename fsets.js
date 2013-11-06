@@ -24,16 +24,29 @@ var fsets = (function() {
   root.forall = function(set, test, low, hi) {  //only usable on ints within a range
     low = low || 0;
     hi = hi || 10000;
-    var iter = function(a) {
-      if (a > hi) return true;
-      else if (set(a) && !test(a)) return false;
-      else return iter(a+1);
+    var iter = function(i) {
+      if (i > hi) return true;
+      else if (set(i) && !test(i)) return false;
+      else return iter(i+1);
     }
     return iter(low);
   };
 
   root.exists = function(set, test, low, hi) {
     return !root.forall(set, function(x) { return !test(x); }, low, hi);
+  };
+
+  root.toString = function(set, hi, low) {
+    low = low || 0;
+    hi = hi || 10000;
+    var iter = function(i, str) {
+      if (i > hi) return str;
+      else if (root.contains(set, i)) {
+        return iter(i+1, (str ? str + ", " : str) + i.toString());
+      }
+      else return iter(i+1, str);
+    }
+    return iter(low, "");
   };
 
 }).call(this);
