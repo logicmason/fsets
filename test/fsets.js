@@ -7,9 +7,11 @@ var contains = fsets.contains;
 var singleton = fsets.singleton;
 var union = fsets.union;
 var intersect = fsets.intersect;
+var forall = fsets.forall;
 var arr = [4,5,6];
 var setOfEvenNums = function(x) { return x % 2 === 0; }
 var setOfBigNums = function(x) { return (x > 100); }
+var setOfBigEvens = intersect(setOfBigNums, setOfEvenNums);
 
 describe('Contains', function() {
 
@@ -95,7 +97,6 @@ describe('Intersection', function() {
   var threeAndFour = union( singleton(3), singleton(4));
   var fiveAndSix = union( singleton(5), singleton(6));
   var threeToSix = union( singleton(3), singleton(4));
-  var setOfBigEvens = intersect(setOfBigNums, setOfEvenNums);
   var five = intersect( oneAndFive, fiveAndSix );
   var threeAndFourIntersectThreeToSix = intersect( threeAndFour, threeToSix );
 
@@ -116,5 +117,36 @@ describe('Intersection', function() {
     expect( contains(setOfBigEvens, 1) ).false;
     expect( contains(setOfBigEvens, 8) ).false;
     expect( contains(setOfBigEvens, 3341) ).false;
+  });
+});
+
+describe('forall', function() {
+  var empty = function(x) { return false; }
+  var three = singleton(3);
+  var nine = singleton(9);
+  var aThousand = singleton(1000);
+  var threeAndFour = union( three, singleton(4));
+  var fourAndEight = union( singleton(4), singleton(8));
+  var areAllFourAndEightEven = forall(fourAndEight, setOfEvenNums);
+
+  it('Should return a boolean', function() {
+    expect( (typeof forall(fourAndEight, setOfEvenNums) === 'boolean') ).true;
+  });
+
+  it('Should return true if predicate holds true for all members', function() {
+    expect( forall(fourAndEight, setOfEvenNums) ).true;
+    expect( forall(aThousand, setOfBigNums) ).true;
+    expect( forall(three, threeAndFour) ).true;
+  });
+
+  it('Should return false if any members fail the predicate test', function() {
+    expect( forall(nine, setOfEvenNums) ).false;
+    expect( forall(nine, setOfBigNums) ).false;
+    expect( forall(nine, setOfBigNums) ).false;
+    expect( forall( union(aThousand, threeAndFour), setOfEvenNums ) ).false;
+  });
+
+  it('Should return true for an empty set', function() {
+    expect( forall(empty, setOfBigEvens) ).true;
   });
 });

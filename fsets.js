@@ -20,6 +20,18 @@ var fsets = (function() {
   root.intersect = function(setA, setB) {
     return function(x) { return setA(x) && setB(x); }
   };
+
+  root.forall = function(set, test, low, hi) {  //only usable on ints within a range
+    low = low || 0;
+    hi = hi || 10000;
+    var iter = function(a) {
+      if (a > hi) return true;
+      else if (set(a) && !test(a)) return false;
+      else return iter(a+1);
+    }
+    return iter(low);
+  }
+
 }).call(this);
 
 exports = fsets;
