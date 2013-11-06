@@ -9,9 +9,22 @@ var union = fsets.union;
 var intersect = fsets.intersect;
 var forall = fsets.forall;
 var arr = [4,5,6];
+var empty = function(x) { return false; }
+var three = singleton(3);
+var nine = singleton(9);
+var aThousand = singleton(1000);
+var oneAndFive = union(singleton(1), singleton(5));
+var threeAndFour = union(singleton(3), singleton(4));
+var fiveAndSix = union(singleton(5), singleton(6));
+var threeToSix = union(singleton(3), singleton(4));
+var threeAndFourIntersectThreeToSix = intersect( threeAndFour, threeToSix );
+var threeAndFour = union(three, singleton(4));
+var fourAndEight = union(singleton(4), singleton(8));
+
 var setOfEvenNums = function(x) { return x % 2 === 0; }
 var setOfBigNums = function(x) { return (x > 100); }
 var setOfBigEvens = intersect(setOfBigNums, setOfEvenNums);
+var setOfBigOrEvenNums = union(setOfBigNums, setOfEvenNums);
 
 describe('Contains', function() {
 
@@ -42,9 +55,6 @@ describe('Contains', function() {
 });
 
 describe('Singleton Set', function() {
-  var three = singleton(3);
-  var nine = singleton(9);
-
   it('Should return a function', function() {
     expect( (typeof three === 'function') ).true;
   });
@@ -68,9 +78,6 @@ describe('Singleton Set', function() {
 });
 
 describe('Union', function() {
-  var threeAndFour = union( singleton(3), singleton(4));
-  var setOfBigOrEvenNums = union(setOfBigNums, setOfEvenNums);
-
   it('Should return a function', function() {
     expect( (typeof threeAndFour === 'function') ).true;
   });
@@ -93,12 +100,7 @@ describe('Union', function() {
 });
 
 describe('Intersection', function() {
-  var oneAndFive = union( singleton(1), singleton(5) );
-  var threeAndFour = union( singleton(3), singleton(4));
-  var fiveAndSix = union( singleton(5), singleton(6));
-  var threeToSix = union( singleton(3), singleton(4));
   var five = intersect( oneAndFive, fiveAndSix );
-  var threeAndFourIntersectThreeToSix = intersect( threeAndFour, threeToSix );
 
   it('Should return a function', function() {
     expect( (typeof setOfBigEvens === 'function') ).true;
@@ -121,13 +123,6 @@ describe('Intersection', function() {
 });
 
 describe('forall', function() {
-  var empty = function(x) { return false; }
-  var three = singleton(3);
-  var nine = singleton(9);
-  var aThousand = singleton(1000);
-  var threeAndFour = union( three, singleton(4));
-  var fourAndEight = union( singleton(4), singleton(8));
-  var areAllFourAndEightEven = forall(fourAndEight, setOfEvenNums);
 
   it('Should return a boolean', function() {
     expect( (typeof forall(fourAndEight, setOfEvenNums) === 'boolean') ).true;
