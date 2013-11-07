@@ -36,7 +36,7 @@ var fsets = (function() {
     return !root.forall(set, function(x) { return !test(x); }, low, hi);
   };
 
-  root.toString = function(set, hi, low) {
+  root.toString = function(set, low, hi) {
     low = low || 0;
     hi = hi || 10000;
     var iter = function(i, str) {
@@ -47,6 +47,13 @@ var fsets = (function() {
       else return iter(i+1, str);
     }
     return iter(low, "");
+  };
+
+  //TODO find a performant way of doing purely functional operations over bounded ranges
+  root.map = function(set, f, low, hi) {
+    return function(x) {
+      return root.exists(set, function(y) { return f(y) === x; }, low, hi)
+    };
   };
 
 }).call(this);

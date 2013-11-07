@@ -3,6 +3,8 @@ var chai = require("chai");
 var expect = chai.expect;
 
 // immutable globals for test set-up
+
+// fset library functions
 var contains = fsets.contains;
 var singleton = fsets.singleton;
 var union = fsets.union;
@@ -10,7 +12,9 @@ var intersect = fsets.intersect;
 var forall = fsets.forall;
 var exists = fsets.exists;
 var toString = fsets.toString;
+var map = fsets.map;
 
+// testing sets
 var arr = [4,5,6];
 var empty = function(x) { return false; }
 var three = singleton(3);
@@ -24,11 +28,17 @@ var threeAndFourIntersectThreeToSix = intersect( threeAndFour, threeToSix );
 var threeAndFour = union(three, singleton(4));
 var fourAndEight = union(singleton(4), singleton(8));
 
+// infinite sets
 var setOfEvenNums = function(x) { return x % 2 === 0; };
 var setOfBigNums = function(x) { return (x > 100); };
 var setOfBigEvens = intersect(setOfBigNums, setOfEvenNums);
 var setOfBigOrEvenNums = union(setOfBigNums, setOfEvenNums);
 var setOfEverything = function(x) { return true; };
+
+// convenience functions to pass to map
+var doubled = function(x) { return x * 2; }
+var squared = function(x) { return x * x; }
+var identity = function(x) { return x; }
 
 describe('Contains', function() {
 
@@ -181,5 +191,22 @@ describe('toString', function () {
 
   it('Should return a formated string of set members', function() {
     expect( toString(threeToSix) === '3, 4, 5, 6').true;
+  });
+});
+
+describe('map', function () {
+  it('Should return a function', function() {
+    expect( (typeof map(threeAndFour, doubled) === 'function') ).true;
+  });
+
+  it('Should return a map of f over the input set', function() {
+    var mySet = map(threeAndFour, doubled, 0, 100);
+    expect( toString(mySet) === '6, 8').true;
+  });
+
+  it('Should work when chained', function() {
+    var mySet = map(map(oneAndFive, squared, 0, 100), doubled, 0, 100);
+    console.log(toString(mySet, 0, 100));
+    expect( toString(mySet, 0, 100) === '2, 50').true;
   });
 });
